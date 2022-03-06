@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.resume.maker.R
 import com.resume.maker.models.*
+import com.resume.maker.utils.TemplateBuilder
 import com.resume.maker.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_preview.*
 
@@ -24,7 +25,7 @@ class PreviewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            id = it.getString("id")
+             id = it.getString("id")
         }
     }
 
@@ -39,7 +40,9 @@ class PreviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        preview.visibility = View.INVISIBLE
         val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+       // setUpPreview()
         viewModel.getPersonalDetails(id).observe(viewLifecycleOwner, {
             personalDetails = it
             getDetails(viewModel)
@@ -68,8 +71,17 @@ class PreviewFragment : Fragment() {
     }
 
     private fun setUpPreview() {
-        var htmlContent = StringBuilder()
-
-
+        progress_circular_preview.visibility = View.GONE
+        preview.visibility = View.VISIBLE
+        preview.loadDataWithBaseURL(
+            null, TemplateBuilder(
+                personalDetails,
+                experiences,
+                languages,
+                skills,
+                projects,
+                educations
+            ).template.toString(), "text/html", "utf-8", null
+        )
     }
 }

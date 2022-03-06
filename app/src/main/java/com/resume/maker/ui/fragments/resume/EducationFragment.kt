@@ -78,7 +78,7 @@ class EducationFragment : Fragment() {
 
         btn_next_edu.setOnClickListener {
             val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-            viewModel.addEducation("d5506da8-baef-4fbd-ae4f-6432dc8de095", arrayList)
+            viewModel.addEducation(id, arrayList)
         }
 
         back_arrow_im_fragment_edu.setOnClickListener {

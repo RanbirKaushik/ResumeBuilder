@@ -56,7 +56,7 @@ class TakePicFragment : Fragment() {
         btn_next_pic.setOnClickListener {
             if (filePath != null) {
                 val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-                viewModel.uploadImage("d5506da8-baef-4fbd-ae4f-6432dc8de095", filePath)
+                viewModel.uploadImage(id, filePath)
 
                 findNavController().navigate(TakePicFragmentDirections.fromPicToPreview(id.toString()))
             }

@@ -80,7 +80,7 @@ class ExperienceFragment : Fragment() {
 
         btn_next_experience.setOnClickListener {
             val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-            viewModel.addExperience("d5506da8-baef-4fbd-ae4f-6432dc8de095", arrayList)
+            viewModel.addExperience(id, arrayList)
         }
 
         back_arrow_im_fragment_experience.setOnClickListener {

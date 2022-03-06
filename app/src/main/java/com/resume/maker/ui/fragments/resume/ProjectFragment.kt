@@ -79,7 +79,7 @@ class ProjectFragment : Fragment() {
 
         btn_next_project.setOnClickListener {
             val viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-            viewModel.addProject("d5506da8-baef-4fbd-ae4f-6432dc8de095", arrayList)
+            viewModel.addProject(id, arrayList)
 
             findNavController().navigate(ProjectFragmentDirections.fromProjectToEdu(id.toString()))
         }
