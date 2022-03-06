@@ -8,6 +8,13 @@
    <WebView
        android:layout_width="match_parent"
        android:id="@+id/preview"
+       android:visibility="gone"
        android:layout_height="match_parent" />
+
+   <ProgressBar
+       android:layout_gravity="center"
+       android:id="@+id/progress_circular_preview"
+       android:layout_width="40dp"
+       android:layout_height="40dp" />
 
 </FrameLayout>

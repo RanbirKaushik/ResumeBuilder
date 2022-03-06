@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -37,9 +38,10 @@ public class Repository {
     private DocumentReference documentReference;
     private final FirebaseAuth firebaseAuth;
     private final MutableLiveData<ArrayList<ExperienceModel>> experienceList;
+    private final MutableLiveData<ArrayList<SecondaryDetailsModel>> langList;
+    private final MutableLiveData<ArrayList<SecondaryDetailsModel>> skillList;
     private final MutableLiveData<ArrayList<ProjectModel>> projectList;
-    private final MutableLiveData<ArrayList<String>> languageList;
-    private final MutableLiveData<ArrayList<String>> skillList;
+    private final MutableLiveData<ArrayList<EducationModel>> eduList;
     private final MutableLiveData<PersonalDetailsModel> personalDetails;
 
     private final MutableLiveData<FirebaseUser> userLiveData;
@@ -55,8 +57,6 @@ public class Repository {
         this.collectionReference = FirebaseFirestore.getInstance().collection("Users");
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.experienceList = new MutableLiveData<>();
-        this.languageList = new MutableLiveData<>();
-        this.skillList = new MutableLiveData<>();
         this.projectList = new MutableLiveData<>();
         this.personalDetails = new MutableLiveData<>();
         this.userLiveData = new MutableLiveData<>();
@@ -65,6 +65,9 @@ public class Repository {
         isResumeAdded = new MutableLiveData<>();
         isSkillAdded = new MutableLiveData<>();
         isLanguageAdded = new MutableLiveData<>();
+        langList = new MutableLiveData<>();
+        skillList = new MutableLiveData<>();
+        eduList = new MutableLiveData<>();
     }
 
     // -------------------------------  Add Resume  -----------------------------
@@ -149,6 +152,112 @@ public class Repository {
                     }).addOnFailureListener(e -> {
             });
         }
+    }
+
+    // -------------------------------  GET  --------------------------------------
+
+    public MutableLiveData<ArrayList<ExperienceModel>> getExperiences(String id) {
+        documentReference = collectionReference.document(Objects.requireNonNull(firebaseAuth.getUid()));
+        documentReference.collection("resume_list").document(id).collection("experience")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<ExperienceModel> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                            list.add(snapshot.toObject(ExperienceModel.class));
+                        }
+                        experienceList.setValue(list);
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(application.getApplicationContext(), "Failed to reach db " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return experienceList;
+    }
+
+    public MutableLiveData<ArrayList<SecondaryDetailsModel>> getLanguages(String id) {
+        documentReference = collectionReference.document(Objects.requireNonNull(firebaseAuth.getUid()));
+        documentReference.collection("resume_list").document(id).collection("language")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<SecondaryDetailsModel> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                            list.add(snapshot.toObject(SecondaryDetailsModel.class));
+                        }
+                        langList.setValue(list);
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(application.getApplicationContext(), "Failed to reach db " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return langList;
+    }
+
+    public MutableLiveData<ArrayList<SecondaryDetailsModel>> getSkills(String id) {
+        documentReference = collectionReference.document(Objects.requireNonNull(firebaseAuth.getUid()));
+        documentReference.collection("resume_list").document(id).collection("skill")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<SecondaryDetailsModel> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                            list.add(snapshot.toObject(SecondaryDetailsModel.class));
+                        }
+                        skillList.setValue(list);
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(application.getApplicationContext(), "Failed to reach db " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return skillList;
+    }
+
+    public MutableLiveData<ArrayList<ProjectModel>> getProjects(String id) {
+        documentReference = collectionReference.document(Objects.requireNonNull(firebaseAuth.getUid()));
+        documentReference.collection("resume_list").document(id).collection("projects")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<ProjectModel> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                            list.add(snapshot.toObject(ProjectModel.class));
+                        }
+                        projectList.setValue(list);
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(application.getApplicationContext(), "Failed to reach db " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return projectList;
+    }
+
+    public MutableLiveData<ArrayList<EducationModel>> getEducation(String id) {
+        documentReference = collectionReference.document(Objects.requireNonNull(firebaseAuth.getUid()));
+        documentReference.collection("resume_list").document(id).collection("education")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        ArrayList<EducationModel> list = new ArrayList<>();
+                        for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                            list.add(snapshot.toObject(EducationModel.class));
+                        }
+                        eduList.setValue(list);
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(application.getApplicationContext(), "Failed to reach db " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return eduList;
+    }
+
+    public MutableLiveData<PersonalDetailsModel> getPersonalDetails(String id) {
+        documentReference = collectionReference.document(Objects.requireNonNull(firebaseAuth.getUid()));
+        documentReference.collection("resume_list").document(id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        personalDetails.setValue(task.getResult().toObject(PersonalDetailsModel.class));
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(application.getApplicationContext(), "Failed to reach db " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        return personalDetails;
     }
 
 

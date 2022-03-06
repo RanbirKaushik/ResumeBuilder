@@ -3,7 +3,6 @@ package com.resume.maker.viewmodel;
 import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -15,6 +14,7 @@ import com.resume.maker.models.EducationModel;
 import com.resume.maker.models.ExperienceModel;
 import com.resume.maker.models.PersonalDetailsModel;
 import com.resume.maker.models.ProjectModel;
+import com.resume.maker.models.SecondaryDetailsModel;
 import com.resume.maker.repository.Repository;
 
 import java.util.ArrayList;
@@ -56,8 +56,36 @@ public class MainViewModel extends AndroidViewModel {
         repository.uploadImage(id, uri);
     }
 
+    // ----------------------- GET -------------------- //
+
+    public MutableLiveData<ArrayList<EducationModel>> getEducations(String id) {
+        return repository.getEducation(id);
+    }
+
+    public MutableLiveData<ArrayList<SecondaryDetailsModel>> getSkills(String id) {
+        return repository.getSkills(id);
+    }
+
+    public MutableLiveData<ArrayList<ExperienceModel>> getExperiences(String id) {
+        return repository.getExperiences(id);
+    }
+
+    public MutableLiveData<ArrayList<SecondaryDetailsModel>> getLanguages(String id) {
+        return repository.getLanguages(id);
+    }
+
+    public MutableLiveData<ArrayList<ProjectModel>> getProjects(String id) {
+        return repository.getProjects(id);
+    }
+
+    public MutableLiveData<PersonalDetailsModel> getPersonalDetails(String id) {
+        return repository.getPersonalDetails(id);
+    }
+
     public MutableLiveData<FirebaseUser> login() {
         return repository.login();
     }
 
 }
+
+// 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
